@@ -56,19 +56,28 @@ h1 {
 </html>
 
 <?php
+require 'passwords/passwords.php';
+
+$users = getUsers();
+
 // Készíts egy esztétikus PHP oldalt, amely egy formban bekéri a felhasználói nevet (Username) és a
 // jelszót (echo nélkül). A bevitt információkat GET vagy POST tömb segítségével juttasd át a szerver
 // oldalra.
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  // collect value of input field
-  $username = $_POST['uname'];
-  $password = $_POST['psw'];
-  if (empty($username) || empty($password)) {
-    echo "Username or password is empty";
-  } else {
-    echo "Username: ".$username;
+    // collect value of input field
+    $username = $_POST['uname'];
+    $password = $_POST['psw'];
+    if (empty($username) || empty($password)) {
+      echo "Username or password is empty";
+    } else {
+      // Check if the username and password match the users data
+      if (array_key_exists($username, $users) && $users[$username] == $password) {
+        echo "Successful login!";
+      } else {
+        echo "Invalid username or password";
+      }
+    }
   }
-}
 ?>
 
 </body>
